@@ -11,8 +11,10 @@ from fastats.core.ast_transforms.processor import recompile, uncompile
 def test_recompile_happy_path():
     func_as_string = dedent('''
     def f(n):
+         """This is a docstring"""
          # This is a comment
-         return n ** 2
+         squared = n ** 2
+         return squared
     ''')
     tree_module = ast.parse(func_as_string)
     recompile(tree_module, 'test_processor.py', 'exec')
@@ -20,26 +22,13 @@ def test_recompile_happy_path():
 
 def test_recompile_no_func():
     not_a_func = dedent('''
-    12 + 12 * 3
+    n = 12 + 12 * 3
+    square = lambda num: num ** 2
+    n2 = square(n)
     ''')
     tree_module = ast.parse(not_a_func)
-    with raises(TypeError, match='Function body code not found'):
+    with raises(TypeError, match='Function not found'):
         recompile(tree_module, 'test_processor.py', 'exec')
-
-
-def test_recompile_more_detail():
-    func_as_string = dedent('''
-    def another_func(x):
-        return x ** 3
-
-    # This is a comment before the func
-    def f(n):
-         """This is a docstring"""
-         # This is a comment inside
-         return n ** 2
-    ''')
-    tree_module = ast.parse(func_as_string)
-    recompile(tree_module, 'test_processor.py', 'exec')
 
 def test_uncompile_happy_path():
     def sq(num):

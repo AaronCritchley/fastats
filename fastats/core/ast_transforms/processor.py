@@ -63,20 +63,17 @@ def recompile(source, filename, mode, flags=0):
     Recompiles output back to a code object.
     Source may also be preparsed AST.
     """
-    node = source.body[0]
+    try:
+        func = next(obj for obj in source.body if isinstance(obj, ast.FunctionDef))
+    except StopIteration:
+        raise TypeError('Function not found')
 
     c0 = compile(source, filename, mode, flags, True)
 
     # This code object defines the function. Find the function's actual body code:
-    for c in c0.co_consts:
-        if not isinstance(c, CodeType):
-            continue
-        if c.co_name == node.name and c.co_firstlineno == node.lineno:
-            break
-    else:
-        raise TypeError('Function body code not found')
-
-    return c
+    return next(c for c in c0.co_consts if isinstance(c, CodeType) and
+                                           c.co_name == func.name and
+                                           c.co_firstlineno == func.lineno)
 
 
 def uncompile(c):
