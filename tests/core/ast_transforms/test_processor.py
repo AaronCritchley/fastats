@@ -27,6 +27,20 @@ def test_recompile_no_func():
         recompile(tree_module, 'test_processor.py', 'exec')
 
 
+def test_recompile_more_detail():
+    func_as_string = dedent('''
+    def another_func(x):
+        return x ** 3
+
+    # This is a comment before the func
+    def f(n):
+         """This is a docstring"""
+         # This is a comment inside
+         return n ** 2
+    ''')
+    tree_module = ast.parse(func_as_string)
+    recompile(tree_module, 'test_processor.py', 'exec')
+
 def test_uncompile_happy_path():
     def sq(num):
         return num ** 2
