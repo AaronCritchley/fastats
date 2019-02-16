@@ -1,3 +1,31 @@
+# 2019.2
+
+Numpy requirements updated to be >= 1.14
+
+#### New features
+
+#### Bug fixes
+
+#### Enhancements
+
+- New unit-test for rolling window nanmedian
+- Removed support for numpy < 1.14, and fixed formatting from earlier numpy versions
+
+# 2019.1
+
+Numba requirements changed to be >= 0.41 due to Windows segfaults
+
+#### New features
+
+#### Bug fixes
+
+- Fixed the numba lowering error from the scaling check for `ddof not in (0, 1)`
+
+#### Enhancements
+
+- Now testing all PRs on python 3.5, 3.6 and 3.7 on Linux and Windows, and 3.7-dev on linux
+- Travis CI using Xenial instead of Trusty to get python 3.7 support
+
 # 2018.1
 
 #### New features
@@ -32,6 +60,7 @@ or eigenvectors.
 - drop_missing : helper function analogous to statsmodels missing='drop' mechanism which allows the user to evict 
 features and observations where one or more data points is not finite such that OLS may then be performed on dense / 
 complete data.
+- EWMA functions for 1D and 2D data sets (dense data / no NaNs)
 
 #### Bug fixes
 

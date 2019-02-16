@@ -127,9 +127,9 @@ def shrink_off_diagonals(A, shrinkage_factor):
     >>> import numpy as np
     >>> A = np.array([[1.1, 0.9, 0.8], [0.9, 1.2, 0.9], [0.8, 0.9, 1.3]])
     >>> shrink_off_diagonals(A, 0.1)
-    array([[ 1.1 ,  0.09,  0.08],
-           [ 0.09,  1.2 ,  0.09],
-           [ 0.08,  0.09,  1.3 ]])
+    array([[1.1 , 0.09, 0.08],
+           [0.09, 1.2 , 0.09],
+           [0.08, 0.09, 1.3 ]])
     """
     m, n = A.shape
     assert m == n
@@ -163,9 +163,7 @@ def standard_parallel(A, ddof=0):
     cases.
     """
     assert A.ndim > 1
-
-    if ddof not in (0, 1):
-        raise ValueError('ddof must be either 0 or 1')
+    assert ddof == 0 or ddof == 1
 
     n = A.shape[1]
     res = empty_like(A, dtype=np_float64)
